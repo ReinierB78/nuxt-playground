@@ -1,5 +1,6 @@
 <template>
   <div>
-    <Game />
+    <Home />
   </div>
 </template>
+
