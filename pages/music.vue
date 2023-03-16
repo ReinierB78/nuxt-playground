@@ -22,7 +22,6 @@
               </ul>
               <p>Popularity: {{ artist.popularity }}</p>
             </div>
-
             <ul v-if="currentTopTracks">
               <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="flex mb-3 bg-gray-900 min-h-[90px]" @click="handleAudioSrc(track)">
                 <div class="w-2/6">
@@ -59,15 +58,15 @@
 </template>
 
 <script setup lang="ts">
-const currentArtistSearch = ref("");
-const currentArtist = ref("");
+const currentArtistSearch: any = ref("");
+const currentArtist: any = ref("");
 const audioIsPlaying = ref(false);
 const loading = ref(false);
-const currentTopTracks = ref({});
+const currentTopTracks: any = ref({});
+const audioSrc: any = ref();
 
-const audioSrc = ref();
+let audio: any = ref()
 
-let audio: object = ref()
 onBeforeMount(()=>{
   audio = new Audio()
 })
@@ -119,7 +118,9 @@ const handleAudioSrc = (track: any) => {
   audioIsPlaying.value = false;
   audio.pause()
   audioSrc.value = track;
+  handlePlay()
 };
+
 const handleSearch = async () => {
   loading.value = true;
   const { data: Artists, pending, error, refresh } = await useFetch(`https://spotify-api-wrapper.appspot.com/artist/${currentArtistSearch.value}`);
