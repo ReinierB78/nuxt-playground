@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-black min-h-screen">
+  <div class="bg-black min-h-screen relative">
     <div class="w-3/4 mx-auto">
       <div class="w-full sm:w-3/4 mx-auto py-16 sm:flex">
         <input type="text" class="border w-full p-2 sm:p-4 rounded-3xl text-center sm:text-left text-base sm:text-3xl" name="search" v-model="currentArtistSearch" placeholder="Search by artist" />
@@ -11,7 +11,8 @@
             <div class="text-white"></div>
           </div>
           <div class="text-white text-center">
-            <img :src="getImage(1)" alt="" class="mx-auto"/>
+            <img v-if="loading" src="https://placehold.co/600x400?text=loading" alt="" />
+            <img v-else :src="getImage(1)" alt="" class="mx-auto" />
             <div class="my-6">
               <p class="text-3xl">{{ artist.name }}</p>
               <ul v-if="artist.genres" class="flex justify-center">
@@ -21,9 +22,8 @@
               </ul>
               <p>Popularity: {{ artist.popularity }}</p>
             </div>
-
             <ul v-if="currentTopTracks">
-              <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="flex mb-3 bg-gray-900 min-h-[90px]">
+              <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="flex mb-3 bg-gray-900 min-h-[90px]" @click="handleAudioSrc(track)">
                 <div class="w-2/6">
                   <img class="object-cover bg-red-300 h-full" :src="track.album.images[2].url" :alt="`Image of the album ${track.album.name}`" />
                 </div>
@@ -35,7 +35,22 @@
               </li>
             </ul>
           </div>
-          <div class="text-white"></div>
+        </div>
+      </div>
+    </div>
+    <div v-if="audioSrc" class="fixed top-[100vh] translate-y-[-100%] w-full">
+      <div id="audio-holder" class="sm:w-1/4 rounded mx-auto p-4 bg-white/75 text-black flex gap-4">
+        <button id="handle-stop" @click="handlePlay" :class="[`${audioIsPlaying ? 'bg-red-300' : 'bg-blue-300'}`]" class="min-w-[70px] p-3 rounded-full">{{ audioIsPlaying ? 'Stop' : 'Play' }}</button>
+        <div class="flex flex-col">
+          <span>
+            {{ audioSrc.artists[0].name }}
+          </span>
+          <span class="font-bold">
+            {{ audioSrc.name }}
+          </span>
+          <i class="text-sm">
+            {{ audioSrc.album.name }}
+          </i>
         </div>
       </div>
     </div>
@@ -43,10 +58,22 @@
 </template>
 
 <script setup lang="ts">
-const currentArtistSearch = ref("");
-const currentArtist = ref("");
+const currentArtistSearch: any = ref("");
+const currentArtist: any = ref("");
+const audioIsPlaying = ref(false);
+const loading = ref(false);
+const currentTopTracks: any = ref({});
+const audioSrc: any = ref();
 
-const currentTopTracks = ref({});
+let audio: any = ref()
+
+onBeforeMount(()=>{
+  audio = new Audio()
+})
+const playing = false;
+interface Loading {
+  loading: boolean;
+}
 
 interface Artists {
   artists: {
@@ -69,19 +96,43 @@ interface Artists {
   }[];
 }
 
+const handlePlay = () => {
+  if(audioSrc?.value) {
+    if(audioIsPlaying.value == false) {
+      if(audio.src != audioSrc.value.preview_url) {
+        audio.src = audioSrc.value.preview_url
+      }
+      audio.play()
+      audioIsPlaying.value = true
+    } else {
+      audio.pause()
+      audioIsPlaying.value = false
+    }
+  }
+}
+
+const handleAudioSrc = (track: any) => {
+  if (audioSrc.value != null) {
+    audioSrc.value = false;
+  }
+  audioIsPlaying.value = false;
+  audio.pause()
+  audioSrc.value = track;
+  handlePlay()
+};
+
 const handleSearch = async () => {
+  loading.value = true;
   const { data: Artists, pending, error, refresh } = await useFetch(`https://spotify-api-wrapper.appspot.com/artist/${currentArtistSearch.value}`);
 
   currentArtist.value = Artists.value;
 
   await getTopTracksOfArtist(Artists.value.artists.items[0].id);
+  loading.value = false;
 };
 
 const getTopTracksOfArtist = async (id: string) => {
-  console.log(id);
-
   const { data, pending, error, refresh } = await useFetch(`https://spotify-api-wrapper.appspot.com/artist/${id}/top-tracks`);
-
   currentTopTracks.value = data.value;
 };
 
@@ -91,11 +142,12 @@ const getImage = (index: number) => {
   }
 };
 
-const handleKeyEvents = onMounted(function () {
-  document.addEventListener("keypress", function (input) {
+const handleKeyEvents = onMounted(() => {
+  document.addEventListener("keypress", input => {
     if (input.code == "Enter") {
       handleSearch();
     }
   });
 });
+
 </script>
