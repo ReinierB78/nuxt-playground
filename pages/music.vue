@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-black min-h-screen relative">
-    <div class="w-3/4 mx-auto">
+  <div class="bg-black min-h-screen relative pt-24 sm:pt-0">
+    <div class="w-full sm:w-3/4 mx-auto px-4 sm:px-0">
       <div class="w-full sm:w-3/4 mx-auto py-16 sm:flex">
         <input type="text" class="border w-full p-2 sm:p-4 rounded-3xl text-center sm:text-left text-base sm:text-3xl" name="search" v-model="currentArtistSearch" placeholder="Search by artist" />
         <button @click="handleSearch" class="w-full sm:w-auto mt-4 sm:mt-0 bg-red-400 p-2 sm:py-5 px-12 text-white sm:-ml-16 sm:rounded-r-3xl font-light">Search</button>
@@ -10,9 +10,9 @@
           <div>
             <div class="text-white"></div>
           </div>
-          <div class="text-white text-center">
-            <img v-if="loading" src="https://placehold.co/600x400?text=loading" alt="" />
-            <img v-else :src="getImage(1)" alt="" class="mx-auto" />
+          <div class="text-white">
+            <img v-if="loading" src="https://placehold.co/600x400?text=loading" alt="" class="hidden sm:block" />
+            <img v-else :src="getImage(1)" alt="" class="mx-auto hidden sm:block" />
             <div class="my-6">
               <p class="text-3xl">{{ artist.name }}</p>
               <ul v-if="artist.genres" class="flex justify-center">
@@ -23,11 +23,11 @@
               <p>Popularity: {{ artist.popularity }}</p>
             </div>
             <ul v-if="currentTopTracks">
-              <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="flex mb-3 bg-gray-900 min-h-[90px]" @click="handleAudioSrc(track)">
-                <div class="w-2/6">
-                  <img class="object-cover bg-red-300 h-full" :src="track.album.images[2].url" :alt="`Image of the album ${track.album.name}`" />
+              <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="grid grid-cols-3 gap-4 mb-3 bg-gray-900 min-h-[90px]" @click="handleAudioSrc(track)">
+                <div class="col-span-1">
+                  <img class="object-cover bg-red-300 w-full" :src="track.album.images[2].url" :alt="`Image of the album ${track.album.name}`" />
                 </div>
-                <div class="w-5/6 py-1 flex items-start flex-col">
+                <div class="col-span-2 py-1 flex items-start flex-col">
                   <span class="text-xl">{{ track.name }}</span
                   ><br />
                   <span class="text-sm italic">{{ track.album.name }} </span>
@@ -38,10 +38,10 @@
         </div>
       </div>
     </div>
-    <div v-if="audioSrc" class="fixed top-[100vh] translate-y-[-100%] w-full">
-      <div id="audio-holder" class="sm:w-1/4 rounded mx-auto p-4 bg-white/75 text-black flex gap-4">
-        <button id="handle-stop" @click="handlePlay" :class="[`${audioIsPlaying ? 'bg-red-300' : 'bg-blue-300'}`]" class="min-w-[70px] p-3 rounded-full">{{ audioIsPlaying ? 'Stop' : 'Play' }}</button>
-        <div class="flex flex-col">
+    <div v-if="audioSrc" class="fixed top-0 sm:top-[100vh] sm:translate-y-[-100%] w-full">
+      <div id="audio-holder" class="sm:w-1/4 sm:rounded mx-auto p-4 bg-white sm:bg-white/75 text-black grid grid-cols-4 gap-4">
+        <button id="handle-stop" @click="handlePlay" :class="[`${audioIsPlaying ? 'bg-red-300' : 'bg-blue-300'}`]" class="col-span-1 max-w-[70px] max-h-[70px] p-3 rounded-full">{{ audioIsPlaying ? 'Stop' : 'Play' }}</button>
+        <div class="col-span-3 flex flex-col">
           <span>
             {{ audioSrc.artists[0].name }}
           </span>
