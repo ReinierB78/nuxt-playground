@@ -295,6 +295,11 @@
   resolved "https://registry.npmjs.org/@esbuild/darwin-x64/-/darwin-x64-0.17.10.tgz"
   integrity sha512-J4MJzGchuCRG5n+B4EHpAMoJmBeAE1L3wGYDIN5oWNqX0tEr7VKOzw0ymSwpoeSpdCa030lagGUfnfhS7OvzrQ==
 
+"@heroicons/vue@^2.0.16":
+  version "2.0.16"
+  resolved "https://registry.npmjs.org/@heroicons/vue/-/vue-2.0.16.tgz"
+  integrity sha512-saVAExLlGu6epqmS543qeWd/UOJUxpTJyK9aXeFGqS3VIW8X7yyJQmUGT40A38gBEAxMOdTdH9jFSh8sjPFM7A==
+
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@ioredis/commands/-/commands-1.2.0.tgz"
@@ -4188,7 +4193,7 @@ vue-router@^4.1.6:
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
-vue@^3.0.0, vue@^3.2.0, vue@^3.2.25, vue@^3.2.47, "vue@>=2.7 || >=3", vue@3.2.47:
+vue@^3.0.0, vue@^3.2.0, vue@^3.2.25, vue@^3.2.47, "vue@>= 3", "vue@>=2.7 || >=3", vue@3.2.47:
   version "3.2.47"
   resolved "https://registry.npmjs.org/vue/-/vue-3.2.47.tgz"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==
