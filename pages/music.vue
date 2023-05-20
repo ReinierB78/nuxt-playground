@@ -6,16 +6,13 @@
         <button @click="handleSearch" class="w-full sm:w-auto mt-4 sm:mt-0 bg-red-400 p-2 sm:py-5 px-12 text-white sm:-ml-16 sm:rounded-r-3xl font-light">Search</button>
       </div>
       <div class="block text-white text-center"  v-if="getLocalStorage()">Recent searches </div>
-      <div class="flex justify-center p-2 mx-64 mb-4 " v-if="getLocalStorage()">
+      <div class="flex justify-center p-2 sm:mx-64 mb-4 " v-if="getLocalStorage()">
         <ul class="text-white inline flex">
           <li v-for="(item, index) in getLocalStorage()" :key="index" @click="handlePopularSearchItem(item)" 
           class="mr-2 border-white text-white border py-1 px-3 rounded-2xl text-xs" role="button">
             {{ item }}
           <!-- <button @click="removeRecentSearchItem(index)" class="ml-2">x</button> -->
-
           </li>
-
-
         </ul>
       </div>
       <div v-if="currentArtist">
@@ -33,7 +30,6 @@
                   {{ genre }}
                 </li>
               </ul>
-              <p>Popularity: {{ artist.popularity }}</p>
             </div>
             <ul v-if="currentTopTracks">
               <li v-for="(track, index) in currentTopTracks.tracks" :key="index" class="grid grid-cols-3 gap-4 mb-3 bg-gray-900 min-h-[90px]" @click="handleAudioSrc(track)">
@@ -53,11 +49,11 @@
     </div>
     <div v-if="audioSrc" class="fixed top-0 sm:top-[100vh] sm:translate-y-[-100%] w-full">
       <div id="audio-holder" class="sm:w-1/4 sm:rounded mx-auto p-4 bg-white sm:bg-white/75 text-black grid grid-cols-5 gap-4">
-        <button id="handle-stop" @click="handlePlay" :class="[`${audioIsPlaying ? 'bg-red-300' : 'bg-blue-300'}`]" class="col-span-1 max-w-[70px] max-h-[70px] p-3 rounded-full">
+        <button id="handle-stop" @click="handlePlay" :class="[`${audioIsPlaying ? 'bg-red-300' : 'bg-blue-300'}`]" class="col-span-1 w-[60px] h-[60px] max-w-[70px] max-h-[70px] p-3 rounded-full">
           <StopIcon class="text-blue-800" v-if="audioIsPlaying" />
           <PlayIcon class="text-blue-800" v-else />
         </button>
-
+<!-- 49235 -->
         <div class="col-span-3 flex flex-col">
           <span>
             {{ audioSrc.artists[0].name }}
