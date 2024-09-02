@@ -15,9 +15,11 @@
 <script setup lang="ts">
 
 const getLocalStorage: any = () => {
-  let localStorageSet = localStorage.getItem('recentlySearched')
-  if(localStorageSet) {
-    return JSON.parse(localStorageSet)
+  if(localStorage.getItem('recentlySearched')) {
+    let localStorageSet = localStorage.getItem('recentlySearched')
+    if(localStorageSet) {
+      return JSON.parse(localStorageSet)
+    }
   }
   return null
 }

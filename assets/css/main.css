@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.letter-wrong {
+  @apply bg-red-800 rounded-xl h-[100%] w-[100%];
+}
+
+.letter-exists {
+  @apply bg-yellow-600 rounded-full h-[90%] w-[90%];
+}
+
+.letter-correct {
+  @apply bg-red-800 rounded-xl h-[100%] w-[100%]; 
+}
+
+.checked {
+  animation: checkpulse 0.275s;
+}
+@keyframes checkpulse {
+  0% {box-shadow: 0 0 0 #fff;}
+  50% {box-shadow: 0 0 15px #fff;}
+  100% {box-shadow: 0 0 0 #fff;}
+}

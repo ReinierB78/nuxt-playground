@@ -87,9 +87,7 @@ onBeforeMount(() => {
   audio = new Audio();
 });
 
-const testingEmit = item => {
-  console.log(item);
-};
+
 const playing = false;
 interface Loading {
   loading: boolean;
@@ -137,7 +135,8 @@ const handlePlay = () => {
 };
 
 const handleLocalStorage = (input: string) => {
-  if (localStorage.getItem("recentlySearched") == null) {
+  
+  if (localStorage.getItem("recentlySearched") === null || localStorage.getItem("recentlySearched")?.length === 0 ) {
     localStorage.setItem("recentlySearched", '["' + input + '"]');
   } else {
     let currentStorage = localStorage.getItem("recentlySearched");
@@ -157,9 +156,8 @@ const handleLocalStorage = (input: string) => {
 };
 
 const removeRecentSearchItem = (index:number) => {
-  console.log('i am in')
-  let currentStorage = localStorage.getItem("recentlySearched");
-  let currentSearchArray = JSON.parse(currentStorage)
+  let currentStorage = localStorage?.getItem("recentlySearched");
+  let currentSearchArray = JSON.parse(currentStorage as string)
   currentSearchArray.splice(index, 1)
   localStorage.setItem("recentlySearched", JSON.stringify(currentSearchArray));
 }
@@ -180,8 +178,8 @@ const handleSearch = async () => {
 
   currentArtist.value = Artists.value;
 
-  await getTopTracksOfArtist(Artists.value.artists.items[0].id);
-  handleLocalStorage(currentArtistSearch.value);
+  await getTopTracksOfArtist(currentArtist.value.artists.items[0].id);
+  // handleLocalStorage(currentArtistSearch.value);
   loading.value = false;
 };
 
@@ -206,7 +204,7 @@ const handleKeyEvents = onMounted(() => {
 
 const getLocalStorage: any = () => {
   let localStorageSet = localStorage.getItem("recentlySearched");
-  if (localStorageSet) {
+  if (localStorageSet?.length) {
     return JSON.parse(localStorageSet);
   }
   return null;
